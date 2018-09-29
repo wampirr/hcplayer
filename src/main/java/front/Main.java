@@ -1,8 +1,9 @@
 package front;
 
 import com.jr.util.Util;
-import front.controllers.GlobalBorderPaneController;
+import front.controllers.GlobalVBoxController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -21,29 +22,21 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        try {
-            log.info("init started");
+        log.info("init started");
 
-            Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
-                log.error(t, e);
-            });
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            log.error(t, e);
+        });
 
-            FXMLLoader loader = new FXMLLoader();
-            Parent root = loader.load(getClass().getResource("/fxml/GlobalBorderPane.fxml"));
-            GlobalBorderPaneController globalBorderPaneController = loader.getController();
-            primaryStage.setScene(new Scene(root, 1024, 768));
+        FXMLLoader loader = new FXMLLoader();
+        Parent root = loader.load(getClass().getResource("/fxml/GlobalVBox.fxml"));
+        GlobalVBoxController globalVBoxController = loader.getController();
+        primaryStage.setScene(new Scene(root, 1024, 768));
+        primaryStage.getScene().getStylesheets().add(getClass().getResource("/css/main.css").toURI().toString());
 
-            primaryStage.setTitle("hcplayer");
-            primaryStage.getIcons().add(new Image("/images/player_icon.png"));
-            primaryStage.show();
-        } catch (Throwable t) {
-            StringWriter writer = new StringWriter();
-            PrintWriter pw = new PrintWriter(writer);
-            t.printStackTrace(pw);
-            String s = writer.toString();
-            log.error(s);
-            System.exit(1);
-        }
+        primaryStage.setTitle("hcplayer");
+        primaryStage.getIcons().add(new Image("/images/player_icon.png"));
+        primaryStage.show();
     }
 
     @Override
@@ -61,7 +54,12 @@ public class Main extends Application {
         try {
             launch(args);
         } catch (Throwable t) {
-            log.error(t);
+            StringWriter writer = new StringWriter();
+            PrintWriter pw = new PrintWriter(writer);
+            t.printStackTrace(pw);
+            log.error(writer.toString());
         }
+        Platform.exit();
+        System.exit(0);
     }
 }

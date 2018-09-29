@@ -2,10 +2,7 @@ package com.jr;
 
 import com.jr.logic.CritHardcode;
 import com.jr.logic.FlavorLogic;
-import com.jr.model.Crit;
-import com.jr.model.Flavor;
-import com.jr.model.NormalPlaylist;
-import com.jr.model.Song;
+import com.jr.model.*;
 import com.jr.service.*;
 import javafx.util.Pair;
 import org.junit.Ignore;
@@ -75,6 +72,7 @@ public class TestHelper {
         setStandardCrits();
         setStandardSongs();
         setStandardNormalPlaylists();
+        setStandardFilteredPlaylists();
     }
 
     private static void setStandardCrits() {
@@ -119,11 +117,11 @@ public class TestHelper {
         dragonforce_StrikeOfTheNinja = SongService.save(prefix + "Dragonforce - Strike Of The Ninja.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(powerMetal, 10), new Pair<>(energetic, 10));
         eluveitie_Lvgvs = SongService.save(prefix + "Eluveitie - Lvgvs.mp3"
-                , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(folkMetal, 7), new Pair<>(energetic, 6), new Pair<>(singsong, 7));
+                , new Pair<>(CritHardcode.ratingCrit, 7), new Pair<>(metal, 4), new Pair<>(folkMetal, 8), new Pair<>(energetic, 6), new Pair<>(singsong, 7));
         nightwish_FeelForYou = SongService.save(prefix + "Nightwish - Feel For You.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 6), new Pair<>(symphonicPowerMetal, 7), new Pair<>(calm, 5), new Pair<>(energetic, 5));
         nightwish_Stargazers = SongService.save(prefix + "Nightwish - Stargazers.mp3"
-                , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(symphonicPowerMetal, 9), new Pair<>(epic, 6));
+                , new Pair<>(CritHardcode.ratingCrit, 5), new Pair<>(symphonicPowerMetal, 9));
         rhapsodyOfFire_ReignOfTerror = SongService.save(prefix + "Rhapsody of Fire - Reign Of Terror.mp3"
                 , new Pair<>(CritHardcode.ratingCrit, 8), new Pair<>(powerMetal, 9), new Pair<>(energetic, 10));
         scooter_AiiiShotTheDj = SongService.save(prefix + "Scooter - Aiii Shot The Dj.mp3"
@@ -195,5 +193,13 @@ public class TestHelper {
                 , soil_BreakingMeDown
                 , pain_SameOldSong
                 , powerwolf_DieDieCrucified);
+    }
+
+    private static void setStandardFilteredPlaylists() {
+        new FilteredPlaylistServiceTest().deleteAll();
+
+        FilteredPlaylistService.save("New songs", new Filter("[rating == null] | [genre == null] | [mood == null] | [novelty > 800]"));
+        FilteredPlaylistService.save("Somewhat calm", new Filter("[calm > 4] | [wordless != null] | [classic > 7]"));
+        FilteredPlaylistService.save("Metal", new Filter("[metal >= 5]"));
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="front.controllers.GlobalVBoxController" fx:id="globalVBox">
+    <children>
+        <!--TOP-->
+        <fx:include source="Menu.fxml"/>
+        <fx:include source="Player.fxml"/>
+        <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <children>
+                <!--LEFT-->
+                <fx:include source="Songs.fxml" HBox.hgrow="SOMETIMES"/>
+                <!--CENTER-->
+                <TabPane fx:id="centerTable" tabClosingPolicy="UNAVAILABLE" HBox.hgrow="ALWAYS">
+                    <tabs>
+                        <Tab text="Play List">
+                            <content>
+                                <fx:include source="PlayList.fxml"/>
+                            </content>
+                        </Tab>
+                        <Tab text="Crits">
+                            <content>
+                                <fx:include source="Crits.fxml"/>
+                            </content>
+                        </Tab>
+                        <Tab disable="true">
+                            <graphic>
+                                <Button fx:id="addNew" defaultButton="true" mnemonicParsing="false"
+                                        text="+ Add New row +" textAlignment="CENTER"/>
+                            </graphic>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+                <!--RIGHT-->
+                <fx:include source="MusicLibrary.fxml" HBox.hgrow="SOMETIMES"/>
+            </children>
+        </HBox>
+        <!--BOTTOM-->
+        <fx:include source="StatusBar.fxml"/>
+    </children>
+</VBox>

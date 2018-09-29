@@ -1,16 +1,21 @@
 package com.jr.util;
 
 import com.jr.dao.CritRepositoryFile;
+import com.jr.dao.FilteredPlaylistRepositoryFile;
 import com.jr.dao.NormalPlaylistRepositoryFile;
 import com.jr.dao.SongRepositoryFile;
 import com.jr.execution.MediaPlayerAdapter;
 import com.jr.logic.CritHardcode;
 import com.jr.model.Playlist;
+import com.jr.model.Song;
 import com.jr.service.NormalPlaylistService;
 import com.jr.service.SongService;
+import javafx.collections.FXCollections;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -53,6 +58,7 @@ public class Util {
         CritRepositoryFile.rewriteFile();
         SongRepositoryFile.rewriteFile();
         NormalPlaylistRepositoryFile.rewriteFile();
+        FilteredPlaylistRepositoryFile.rewriteFile();
         Settings.saveSettings();
     }
 
@@ -67,6 +73,19 @@ public class Util {
         if (playlist != null) return playlist;
 
         return NormalPlaylistService.anonPlaylist(SongService.getAll());
+    }
+
+    public static List<Song> parseSongsFromIds(String songIds) {
+        if (songIds == null)
+            return SongService.getByIds(FXCollections.observableArrayList());
+
+        List<Long> ids = new ArrayList<>();
+        String[] idsString = songIds.split("[,]");
+
+        for (String idString : idsString)
+            ids.add(Long.parseLong(idString));
+
+        return SongService.getByIds(ids);
     }
 
 }
